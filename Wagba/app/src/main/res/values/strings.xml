@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Wagba</string>
+
+    <string name="hint_name">Full name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_signup">New account</string>
+    <string name="title_signup">Hello again!</string>
+    <string name="subtitle_signup">Welcome back you\'ve been missed</string>
+
+    <string name="btn_signup">Sign up</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_register">Register now</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_back">Back</string>
+
+    <string name="forgot_password">Forgot password?</string>
+    <string name="not_registered">Don\'t have an account?</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="gate">Gate</string>
+    <string name="delivery_time">Delivery time</string>
+    <string name="price">Price</string>
+    <string name="available">Available</string>
+    <string name="unavailable">Unavailable</string>
+
+    <string name="options_menu_logout">Logout</string>
+    <string name="title_activity_home">Wagba</string>
+    <string name="title_restaurants">Restaurants</string>
+    <string name="title_orders">Orders</string>
+    <string name="title_cart">Cart</string>
+
+    <string name="title_activity_restaurant">Restaurant</string>
+    <string name="order_number">#</string>
+    <string name="order_items">Items: </string>
+    <string name="order_status">Status: </string>
+    <string name="order_total">Total: </string>
+    <string name="order_gate">Gate: </string>
+    <string name="order_time">Delivery time: </string>
+    <string name="btn_add_to_cart">Add to cart</string>
+
+    <string name="btn_order">Order</string>
+    <string name="gate1">3</string>
+    <string name="gate2">4</string>
+    <string name="time1">12:00</string>
+    <string name="time2">3:00</string>
+
+    <string name="valid_name">Name must be greater than 3 characters</string>
+    <string name="valid_email_org">Please use your college email</string>
+    <string name="valid_email_pattern">Please enter a valid email</string>
+    <string name="valid_auth_collision">This user already exists</string>
+    <string name="valid_pass_short">Min. length is 6 characters</string>
+    <string name="valid_auth_no_user">Credentials don\'t match</string>
+
+    <string name="msg_error_general">Sorry, something went wrong</string>
+</resources>
