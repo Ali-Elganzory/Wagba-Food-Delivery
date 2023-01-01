@@ -13,13 +13,11 @@ import com.ganzory.wagba.shared.AuthValidator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class SignupFragment : Fragment() {
     private lateinit var binding: FragmentSignupBinding
     private lateinit var auth: FirebaseAuth
-    private var databaseReference = FirebaseDatabase.getInstance().reference
     private lateinit var validator: AuthValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,15 +43,14 @@ class SignupFragment : Fragment() {
         binding.btnSignupIn.setOnClickListener {
             it.isEnabled = false
             // Validation
-            val (valid, email, password) = validator.validate()
-            if (!valid) return@setOnClickListener
+            var (valid, email, password) = validator.validate()
             if (binding.tfName.text.toString().length < 3) {
                 binding.tfName.error = getString(R.string.valid_name)
-                return@setOnClickListener
+                valid = false
             }
             // If valid
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
+            if (valid) {
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Go home
                         Log.d(TAG, "sign up : success")
@@ -73,11 +70,13 @@ class SignupFragment : Fragment() {
                             }
                         )
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+                        it.isEnabled = true
                     }
-                    it.isEnabled = true
                 }
+            } else {
+                it.isEnabled = true
+            }
         }
-
         return binding.root
     }
 

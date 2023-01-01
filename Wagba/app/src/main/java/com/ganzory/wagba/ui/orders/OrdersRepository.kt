@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 class OrdersRepository(
-    databaseReference: DatabaseReference,
-    userId: String
+    private val databaseReference: DatabaseReference,
 ) {
-    private val ordersReference = databaseReference.root.child("orders").child(userId)
+    private fun getUserOrdersReference(uid: String) = databaseReference.child("orders").child(uid)
 
-    private var ordersFlow = callbackFlow {
-        val listener = ordersReference.addValueEventListener(
+    fun getAll(uid: String): Flow<List<OrderModel>> = callbackFlow {
+        val reference = getUserOrdersReference(uid)
+        val listener = reference.addValueEventListener(
             object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     dataSnapshot.children.mapNotNull { it.getValue<OrderModel>() }.let {
@@ -30,15 +30,12 @@ class OrdersRepository(
                 }
             },
         )
-        awaitClose { ordersReference.removeEventListener(listener) }
+        awaitClose { reference.removeEventListener(listener) }
     }
 
-
-    fun getAll(): Flow<List<OrderModel>> = ordersFlow
-
-    fun addOrder(order: OrderModel) {
-        val ref = ordersReference.push()
-        ref.setValue(order.copy(id = ref.key ?: "-1"))
+    fun addOrder(uid: String, order: OrderModel) {
+        val reference = getUserOrdersReference(uid).push()
+        reference.setValue(order.copy(id = reference.key ?: "-1"))
     }
 
     companion object {

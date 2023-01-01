@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ganzory.wagba.WagbaApplication
 import com.ganzory.wagba.databinding.FragmentOrdersBinding
 import com.ganzory.wagba.shared.MarginItemDecoration
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class OrdersFragment : Fragment() {
     private val viewModel: OrdersViewModel by activityViewModels {
         OrdersViewModelFactory(
+            Firebase.auth.currentUser?.uid ?: "-1",
             (activity!!.application as WagbaApplication).ordersRepository
         )
     }

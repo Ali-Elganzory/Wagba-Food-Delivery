@@ -8,12 +8,17 @@ import com.ganzory.wagba.databinding.ActivityRestaurantBinding
 import com.ganzory.wagba.shared.MarginItemDecoration
 import com.ganzory.wagba.ui.home.RestaurantsFragment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class RestaurantActivity : AppCompatActivity() {
     private var _binding: ActivityRestaurantBinding? = null
     private val viewModel: RestaurantViewModel by viewModels() {
-        RestaurantViewModelFactory((application as WagbaApplication).cartRepository)
+        RestaurantViewModelFactory(
+            Firebase.auth.currentUser?.uid ?: "-1",
+            (application as WagbaApplication).cartRepository,
+        )
     }
     private val binding get() = _binding!!
     private lateinit var id: String

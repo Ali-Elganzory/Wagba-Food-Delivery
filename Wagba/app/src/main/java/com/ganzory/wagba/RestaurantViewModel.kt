@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.ganzory.wagba.ui.cart.CartItem
 import com.ganzory.wagba.ui.cart.CartRepository
-import com.ganzory.wagba.ui.cart.CartViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -15,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class RestaurantViewModel(
+    private val uid: String,
     private val cartRepository: CartRepository,
 ) : ViewModel() {
     private val database = Firebase.database.reference
@@ -28,10 +28,11 @@ class RestaurantViewModel(
 
     fun addToCart(dish: DishModel, restaurantId: String, onFinish: (q: Int) -> Unit) =
         viewModelScope.launch {
-            cartRepository.getByRestaurantAndDishIds(restaurantId, dish.id).let {
+            cartRepository.getItem(uid, restaurantId, dish.id).let {
                 if (it == null) {
                     cartRepository.insert(
                         CartItem(
+                            uid = uid,
                             restaurantId = restaurantId,
                             dishId = dish.id,
                             name = dish.name,
@@ -80,12 +81,15 @@ class RestaurantViewModel(
     }
 }
 
-class RestaurantViewModelFactory(private val repository: CartRepository) :
+class RestaurantViewModelFactory(
+    private val uid: String,
+    private val repository: CartRepository,
+) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RestaurantViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return RestaurantViewModel(repository) as T
+            return RestaurantViewModel(uid, repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

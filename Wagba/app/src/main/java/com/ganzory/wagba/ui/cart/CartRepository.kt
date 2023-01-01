@@ -4,11 +4,9 @@ import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
 
 class CartRepository(
-    private val cartItemDao: CartItemDao
+    private val cartItemDao: CartItemDao,
 ) {
-    private var cartItemsFlow: Flow<List<CartItem>> = cartItemDao.getAll()
-
-    fun getAll(): Flow<List<CartItem>> = cartItemsFlow
+    fun getAllByUid(uid: String): Flow<List<CartItem>> = cartItemDao.getAllByUid(uid)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -16,8 +14,8 @@ class CartRepository(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun getByRestaurantAndDishIds(restaurantId: String, dishId: String) =
-        cartItemDao.getByRestaurantAndDishIds(restaurantId, dishId)
+    suspend fun getItem(uid: String, restaurantId: String, dishId: String) =
+        cartItemDao.getItem(uid, restaurantId, dishId)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -30,8 +28,4 @@ class CartRepository(
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun delete(cartItem: CartItem) = cartItemDao.delete(cartItem)
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun deleteAll() = cartItemDao.deleteAll()
 }

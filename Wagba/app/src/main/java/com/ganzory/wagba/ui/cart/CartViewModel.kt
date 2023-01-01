@@ -6,10 +6,11 @@ import com.ganzory.wagba.ui.orders.OrdersRepository
 import kotlinx.coroutines.launch
 
 class CartViewModel(
+    private val uid: String,
     private val cartRepository: CartRepository,
     private val ordersRepository: OrdersRepository,
 ) : ViewModel() {
-    val items: LiveData<List<CartItem>> = cartRepository.getAll().asLiveData()
+    val items: LiveData<List<CartItem>> = cartRepository.getAllByUid(uid).asLiveData()
 
     fun removeFromCart(cartItem: CartItem) = viewModelScope.launch {
         cartRepository.delete(cartItem)
@@ -21,24 +22,21 @@ class CartViewModel(
         }
     }
 
-    fun clearCart() = viewModelScope.launch {
-        cartRepository.deleteAll()
-    }
-
     fun addOrder(order: OrderModel) = viewModelScope.launch {
-        ordersRepository.addOrder(order)
+        ordersRepository.addOrder(uid, order)
         cartRepository.clear()
     }
 }
 
 class CartViewModelFactory(
+    private val uid: String,
     private val cartRepository: CartRepository,
     private val ordersRepository: OrdersRepository,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CartViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CartViewModel(cartRepository, ordersRepository) as T
+            return CartViewModel(uid, cartRepository, ordersRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

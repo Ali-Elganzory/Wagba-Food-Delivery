@@ -14,11 +14,14 @@ import com.ganzory.wagba.shared.MarginItemDecoration
 import com.ganzory.wagba.ui.orders.OrderModel
 import com.ganzory.wagba.ui.orders.OrderStatus
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 
 class CartFragment : Fragment() {
     private val viewModel: CartViewModel by activityViewModels {
         CartViewModelFactory(
+            Firebase.auth.currentUser?.uid ?: "-1",
             (activity!!.application as WagbaApplication).cartRepository,
             (activity!!.application as WagbaApplication).ordersRepository
         )

@@ -72,12 +72,13 @@ class LoginFragment : Fragment() {
                                 }
                             )
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+                            it.isEnabled = true
                         }
                     }
+            } else {
+                it.isEnabled = true
             }
-            it.isEnabled = true
         }
-
         return binding.root
     }
 

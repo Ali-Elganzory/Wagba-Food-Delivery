@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.ganzory.wagba.ui.cart.CartItem
 import com.ganzory.wagba.ui.cart.CartItemDao
 
-@Database(entities = [CartItem::class], version = 2, exportSchema = false)
+@Database(entities = [CartItem::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun cartItemDao(): CartItemDao
 
